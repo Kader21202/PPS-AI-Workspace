@@ -34,6 +34,10 @@ function ConversationContainer() {
     conversationController.createConversation()
   }
 
+  function handleSelectConversation(conversationId: string): void {
+    conversationController.selectConversation(conversationId)
+  }
+
   async function handleSubmit(content: string): Promise<void> {
     await conversationController.submit(content)
   }
@@ -45,6 +49,7 @@ function ConversationContainer() {
         conversations={conversations}
         activeConversationId={activeConversationId}
         onNewConversation={handleNewConversation}
+        onSelectConversation={handleSelectConversation}
       />
 
       <ConversationArea
@@ -57,3 +62,4 @@ function ConversationContainer() {
 }
 
 export default ConversationContainer
+

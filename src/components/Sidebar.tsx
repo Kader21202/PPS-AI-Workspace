@@ -6,6 +6,7 @@ type SidebarProps = {
   conversations?: Conversation[]
   activeConversationId?: string | null
   onNewConversation?: () => void
+  onSelectConversation?: (conversationId: string) => void
 }
 
 function Sidebar({
@@ -13,6 +14,7 @@ function Sidebar({
   conversations = [],
   activeConversationId = null,
   onNewConversation,
+  onSelectConversation,
 }: SidebarProps) {
   const [isCopied, setIsCopied] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
@@ -123,6 +125,8 @@ function Sidebar({
                 <button
                   type="button"
                   className="conversation-history-item"
+                  onClick={() => onSelectConversation?.(conversation.id)}
+                  aria-pressed={conversation.id === activeConversationId}
                 >
                   {conversation.id === activeConversationId ? '●' : '○'}{' '}
                   {conversation.title}
@@ -158,5 +162,6 @@ function Sidebar({
 }
 
 export default Sidebar
+
 
 
