@@ -27,12 +27,14 @@ body,
 #root {
   width: 100%;
   min-width: 320px;
-  min-height: 100%;
+  height: 100%;
   margin: 0;
+  overflow: hidden;
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   background: #f5f7fb;
 }
 
@@ -52,3 +54,4 @@ svg {
   display: block;
   max-width: 100%;
 }
+
