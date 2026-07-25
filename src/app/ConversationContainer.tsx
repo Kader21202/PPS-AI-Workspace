@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
+import Sidebar from '../components/Sidebar'
 import ConversationArea from '../components/ConversationArea'
 import ConversationController from '../controllers/ConversationController'
 import MockResponseProvider from '../providers/MockResponseProvider'
@@ -7,58 +8,52 @@ import type { Message } from '../models/Message'
 
 const responseProvider = new MockResponseProvider()
 
-type ConversationContainerProps = {
-  onAssistantResponse: (content: string) => void
-  onConversationsChange: (conversations: Conversation[]) => void
-  onActiveConversationChange: (conversationId: string | null) => void
-  newConversationRequestId?: number
-}
-
-function ConversationContainer({
-  onAssistantResponse,
-  onConversationsChange,
-  onActiveConversationChange,
-  newConversationRequestId = 0,
-}: ConversationContainerProps) {
+function ConversationContainer() {
   const [messages, setMessages] = useState<Message[]>([])
+  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(
+    null,
+  )
+  const [lastAssistantResponse, setLastAssistantResponse] = useState('')
   const [isTyping, setIsTyping] = useState(false)
-
-  const previousRequestId = useRef(newConversationRequestId)
 
   const conversationController = useMemo(
     () =>
       new ConversationController({
         responseProvider,
         onMessagesChange: setMessages,
-        onConversationsChange,
-        onActiveConversationChange,
+        onConversationsChange: setConversations,
+        onActiveConversationChange: setActiveConversationId,
         onTypingChange: setIsTyping,
-        onAssistantResponse,
+        onAssistantResponse: setLastAssistantResponse,
       }),
-    [onActiveConversationChange, onAssistantResponse, onConversationsChange],
+    [],
   )
 
-  useEffect(() => {
-    if (newConversationRequestId === previousRequestId.current) {
-      return
-    }
-
-    previousRequestId.current = newConversationRequestId
+  function handleNewConversation(): void {
     conversationController.createConversation()
-  }, [conversationController, newConversationRequestId])
+  }
 
   async function handleSubmit(content: string): Promise<void> {
     await conversationController.submit(content)
   }
 
   return (
-    <ConversationArea
-      messages={messages}
-      isTyping={isTyping}
-      onSubmit={handleSubmit}
-    />
+    <>
+      <Sidebar
+        lastAssistantResponse={lastAssistantResponse}
+        conversations={conversations}
+        activeConversationId={activeConversationId}
+        onNewConversation={handleNewConversation}
+      />
+
+      <ConversationArea
+        messages={messages}
+        isTyping={isTyping}
+        onSubmit={handleSubmit}
+      />
+    </>
   )
 }
 
 export default ConversationContainer
-
