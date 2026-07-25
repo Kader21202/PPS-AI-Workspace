@@ -2,11 +2,11 @@ import { useMemo, useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import ConversationArea from '../components/ConversationArea'
 import ConversationController from '../controllers/ConversationController'
-import MockResponseProvider from '../providers/MockResponseProvider'
+import PPSMarocV2ResponseProvider from '../providers/PPSMarocV2ResponseProvider'
 import type { Conversation } from '../models/Conversation'
 import type { Message } from '../models/Message'
 
-const responseProvider = new MockResponseProvider()
+const responseProvider = new PPSMarocV2ResponseProvider()
 
 function ConversationContainer() {
   const [messages, setMessages] = useState<Message[]>([])
@@ -62,4 +62,5 @@ function ConversationContainer() {
 }
 
 export default ConversationContainer
+
 
