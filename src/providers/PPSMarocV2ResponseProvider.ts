@@ -55,18 +55,6 @@ class PPSMarocV2ResponseProvider implements IResponseProvider {
 
     return payload.answer
   }
-
-  async streamResponse(
-    question: string,
-    onChunk: (content: string) => void,
-  ): Promise<string> {
-    const answer = await this.getResponse(question)
-
-    onChunk(answer)
-
-    return answer
-  }
 }
 
 export default PPSMarocV2ResponseProvider
-

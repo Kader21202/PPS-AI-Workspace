@@ -172,94 +172,34 @@ class ConversationController {
     this.notifyMessagesIfActive(conversationId)
     this.onTypingChange(true)
 
-    const assistantMessageId =
-      crypto.randomUUID()
-
-    let assistantMessageCreated = false
-    let streamedResponse = ''
-
     try {
       const finalResponse =
-        await this.responseProvider.streamResponse(
+        await this.responseProvider.getResponse(
           content,
-          (chunk) => {
-            if (!assistantMessageCreated) {
-              const assistantMessage: Message = {
-                id: assistantMessageId,
-                role: 'assistant',
-                content: '',
-              }
-
-              this.appendMessage(
-                conversationId,
-                assistantMessage,
-              )
-
-              assistantMessageCreated = true
-
-              if (
-                this.activeConversationId ===
-                conversationId
-              ) {
-                this.onTypingChange(false)
-              }
-            }
-
-            streamedResponse += chunk
-
-            this.updateMessageContent(
-              conversationId,
-              assistantMessageId,
-              streamedResponse,
-            )
-
-            this.notifyMessagesIfActive(
-              conversationId,
-            )
-
-            if (
-              this.activeConversationId ===
-              conversationId
-            ) {
-              this.onAssistantResponse(
-                streamedResponse,
-              )
-            }
-          },
         )
 
-      if (!assistantMessageCreated) {
-        const assistantMessage: Message = {
-          id: assistantMessageId,
-          role: 'assistant',
-          content: finalResponse,
-        }
-
-        this.appendMessage(
-          conversationId,
-          assistantMessage,
-        )
-
-        this.notifyMessagesIfActive(
-          conversationId,
-        )
-      } else {
-        this.updateMessageContent(
-          conversationId,
-          assistantMessageId,
-          finalResponse,
-        )
-
-        this.notifyMessagesIfActive(
-          conversationId,
-        )
+      const assistantMessage: Message = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: finalResponse,
       }
+
+      this.appendMessage(
+        conversationId,
+        assistantMessage,
+      )
+
+      this.notifyMessagesIfActive(
+        conversationId,
+      )
 
       if (
         this.activeConversationId ===
         conversationId
       ) {
-        this.onAssistantResponse(finalResponse)
+        this.onAssistantResponse(
+          finalResponse,
+        )
       }
     } finally {
       if (
@@ -270,7 +210,6 @@ class ConversationController {
       }
     }
   }
-
   private findActiveConversation(): Conversation | null {
     if (!this.activeConversationId) {
       return null
@@ -304,39 +243,6 @@ class ConversationController {
               ...conversation.messages,
               message,
             ],
-          }
-        },
-      )
-
-    this.notifyConversationsChange()
-  }
-
-  private updateMessageContent(
-    conversationId: string,
-    messageId: string,
-    content: string,
-  ): void {
-    this.conversations =
-      this.conversations.map(
-        (conversation) => {
-          if (
-            conversation.id !== conversationId
-          ) {
-            return conversation
-          }
-
-          return {
-            ...conversation,
-            messages:
-              conversation.messages.map(
-                (message) =>
-                  message.id === messageId
-                    ? {
-                        ...message,
-                        content,
-                      }
-                    : message,
-              ),
           }
         },
       )
@@ -395,4 +301,6 @@ class ConversationController {
 }
 
 export default ConversationController
+
+
 
