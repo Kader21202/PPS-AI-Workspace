@@ -17,18 +17,27 @@ function ConversationArea({
   const hasMessages = messages.length > 0
 
   return (
-    <main className="conversation-area">
-      {hasMessages
-        ? (
+    <main
+      className={
+        hasMessages
+          ? 'conversation-area has-messages'
+          : 'conversation-area is-empty'
+      }
+    >
+      <div className="conversation-area__content">
+        {hasMessages ? (
           <MessagesList
             messages={messages}
             isTyping={isTyping}
           />
-        )
-        : <WelcomeScreen />
-      }
+        ) : (
+          <WelcomeScreen />
+        )}
+      </div>
 
-      <MessageInput onSubmit={onSubmit} />
+      <div className="conversation-area__composer">
+        <MessageInput onSubmit={onSubmit} />
+      </div>
     </main>
   )
 }

@@ -21,19 +21,18 @@ function Header({
   return (
     <header className="app-header">
       <div className="app-brand">
-        <img
-          className="pps-logo"
-          src={logoPps}
-          alt="Logo du PPS"
-        />
+        <div className="app-logo-container">
+          <img
+            className="pps-logo"
+            src={logoPps}
+            alt="Logo du PPS"
+          />
+        </div>
 
         <div className="app-identity">
-          <h1 className="app-title">
-            pps.ia
-            <span className="beta-mini">
-              {t('beta')}
-            </span>
-          </h1>
+          <div className="app-title-row">
+            <h1 className="app-title">pps.ia</h1>
+          </div>
 
           <div
             className="app-title-arabic"
@@ -54,12 +53,16 @@ function Header({
           className="language-selector"
           htmlFor="workspace-language"
         >
-          <span
+          <svg
             className="language-selector-icon"
+            viewBox="0 0 24 24"
             aria-hidden="true"
           >
-            🌐
-          </span>
+            <circle cx="12" cy="12" r="9" />
+            <path d="M3 12h18" />
+            <path d="M12 3a15 15 0 0 1 0 18" />
+            <path d="M12 3a15 15 0 0 0 0 18" />
+          </svg>
 
           <select
             id="workspace-language"
@@ -90,7 +93,10 @@ function Header({
             className="status-dot"
             aria-hidden="true"
           />
-          {t('connected')}
+
+          <span className="connection-status__label">
+            {t('connected')}
+          </span>
         </div>
       </div>
     </header>
@@ -98,3 +104,4 @@ function Header({
 }
 
 export default Header
+

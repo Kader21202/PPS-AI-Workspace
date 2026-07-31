@@ -7,7 +7,6 @@ import type { Conversation } from '../models/Conversation'
 import type { Message } from '../models/Message'
 
 const responseProvider = new PPSMarocV2ResponseProvider()
-
 function ConversationContainer() {
   const [messages, setMessages] = useState<Message[]>([])
   const [conversations, setConversations] = useState<Conversation[]>([])
@@ -29,6 +28,7 @@ function ConversationContainer() {
       }),
     [],
   )
+
 
   function handleNewConversation(): void {
     conversationController.createConversation()
@@ -62,5 +62,8 @@ function ConversationContainer() {
 }
 
 export default ConversationContainer
+
+
+
 
 

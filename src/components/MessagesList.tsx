@@ -17,7 +17,7 @@ function MessagesList({
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
+      behavior: 'auto',
       block: 'end',
     })
   }, [messages, isTyping])
@@ -52,3 +52,4 @@ function MessagesList({
 }
 
 export default MessagesList
+
