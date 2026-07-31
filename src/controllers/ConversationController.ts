@@ -243,9 +243,7 @@ class ConversationController {
         this.notifyMessagesIfActive(
           conversationId,
         )
-      } else if (
-        streamedResponse !== finalResponse
-      ) {
+      } else {
         this.updateMessageContent(
           conversationId,
           assistantMessageId,
