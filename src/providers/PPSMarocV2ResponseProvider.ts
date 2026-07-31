@@ -58,20 +58,11 @@ class PPSMarocV2ResponseProvider implements IResponseProvider {
 
   async streamResponse(
     question: string,
-    onChunk: (chunk: string) => void,
+    onChunk: (content: string) => void,
   ): Promise<string> {
     const answer = await this.getResponse(question)
 
-    const chunks =
-      answer.match(/\S+\s*|\s+/g) ?? [answer]
-
-    for (const chunk of chunks) {
-      onChunk(chunk)
-
-      await new Promise<void>((resolve) => {
-        window.setTimeout(resolve, 25)
-      })
-    }
+    onChunk(answer)
 
     return answer
   }

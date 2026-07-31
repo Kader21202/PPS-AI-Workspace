@@ -396,5 +396,3 @@ class ConversationController {
 
 export default ConversationController
 
-
-
